@@ -1,0 +1,15 @@
+# local secrets / machine specific
+config.json
+
+# backups contain account session data
+backups/
+
+# signing artifacts (may embed pairing keys)
+*.ipa
+*.plist
+*.mobileprovision
+*.p12
+
+# runtime output
+*.log
+last-status.txt
