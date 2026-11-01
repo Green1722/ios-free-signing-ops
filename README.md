@@ -17,6 +17,8 @@ This repo is that part: 4 small PowerShell scripts + a config file.
 | File | Purpose |
 |---|---|
 | `check-status.ps1` | Read-only health check: days left, device over USB, app present, anisette endpoint reachable. Exit codes `0/1/2`. |
+
+**Severity is driven by signature age only.** An unplugged phone is normal: the signature lives on the device and daily use never needs the cable. USB is required once per renewal. A connected device is *additionally* verified (is the app actually still installed), but its absence never raises the severity.
 | `renew.ps1` | Automated re-sign + reinstall through [iLoader](https://github.com/nab138/iloader): selects the device, clicks *Import IPA*, fills the path, waits for `Operation completed`, updates the config. |
 | `backup.ps1` | Backs up config, iLoader session, logs, IPA and pairing file. |
 | `install-schedule.ps1` | Registers a daily scheduled task that pops a notification when ≤ 2 days remain. |

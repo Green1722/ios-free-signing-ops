@@ -5,7 +5,10 @@
   Reads config.json next to this script. Exit codes:
     0 = healthy
     1 = warning  (signature expires within warnDays, or anisette endpoint unreachable)
-    2 = critical (expired / app missing / device missing / python missing)
+    2 = critical (signature expired, or the app is gone from a *connected* device)
+
+  An unplugged phone is NOT an error: the signature lives on the device and daily
+  use never needs the cable. USB is only required when renewing.
 
   Usage:
     .\check-status.ps1              # human readable report
@@ -70,8 +73,7 @@ if (-not (Test-Path $py)) {
     if ($devOut -match '"ProductVersion"\s*:\s*"([^"]+)"') { $ios = $Matches[1] }
     Emit ('  device         : {0} / iOS {1} [USB OK]' -f $name, $ios)
   } else {
-    Emit '  device         : NOT CONNECTED (USB)'
-    Worse 2
+    Emit '  device         : not connected (only renewal needs USB - this is not an error)'
   }
 
   if ($Deep) {
@@ -110,6 +112,7 @@ switch ($status) {
   1 { Emit '  verdict        : WARNING - renew soon (run renew.ps1)' }
   2 { Emit '  verdict        : CRITICAL - action required' }
 }
+Emit '  note           : severity depends on signature age only; an unplugged phone is normal.'
 
 $out | Set-Content -Path $reportPath -Encoding UTF8
 
